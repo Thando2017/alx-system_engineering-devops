@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Uses https://jsonplaceholder.typicode.com along with an employee ID to
+Uses https://khuthi.tech along with an employee ID to
 return information about the employee's todo list progress
 """
 
@@ -9,9 +9,9 @@ from sys import argv
 
 if __name__ == '__main__':
     userId = argv[1]
-    user = requests.get("https://jsonplaceholder.typicode.com/users/{}".
+    user = requests.get("https://khuthi.tech/users/{}".
                         format(userId), verify=False).json()
-    todo = requests.get("https://jsonplaceholder.typicode.com/todos?userId={}".
+    todo = requests.get("https://khuthi.tech/todos?userId={}".
                         format(userId), verify=False).json()
     completed_tasks = []
     for task in todo:
