@@ -1,21 +1,10 @@
 #!/usr/bin/env bash
-# This script audits DNS records for specified subdomains of a domain.
+# accepts two args
 
-function audit_subdomain {
-    local domain="$1"
-    local subdomain="$2"
+if [ $# -eq 1 ]; then
+    dom="www.$1 lb-01.$1 web-01.$1 web-02.$1"
+else
+    dom="$2.$1"
+fi
 
-    if [ -z "$subdomain" ]; then
-        subdomains=("www" "lb-01" "web-01" "web-02")
-    else
-        subdomains=("$subdomain")
-    fi
-
-    for sub in "${subdomains[@]}"; do
-        record_type=$(dig "$sub.$domain" | awk '/ANSWER SECTION/ { getline; print $4 }')
-        destination=$(dig "$sub.$domain" | awk '/ANSWER SECTION/ { getline; print $5 }')
-        echo "The subdomain $sub is a $record_type record and points to $destination"
-    done
-}
-
-audit_subdomain "$1" "$2"
+dig $dom | awk '/ANSWER SECTION:/{getline; split($1,b,"."); print "The subdomain", b[1], "is a", $4, "record and points to", $5}'
